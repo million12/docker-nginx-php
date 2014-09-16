@@ -14,7 +14,4 @@ RUN \
 
   curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Add whole PHP configuration
-ADD etc/ /etc/
-
-ADD supervisord.conf /etc/supervisord.d/php-fpm.conf
+ADD container-files /
