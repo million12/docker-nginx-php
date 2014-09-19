@@ -18,9 +18,15 @@ fastcgi_param  SERVER_SOFTWARE    nginx/$nginx_version;
 fastcgi_param  REMOTE_ADDR        $remote_addr;
 fastcgi_param  REMOTE_PORT        $remote_port;
 fastcgi_param  SERVER_ADDR        $server_addr;
-fastcgi_param  SERVER_PORT        $server_port;
-# fastcgi_param SERVER_NAME       $server_name;
-fastcgi_param  SERVER_NAME        $http_host; # Using $http_host instead of $server_name - $server_name doesn't work correctly when using regexps in vhosts' server_name declaration.
+
+# SERVER_PORT needs to be commented out and has to be determined from other fields (e.g. HTTP_HOST)
+# Otherwise it points invalid port when container port is mapped to different port on host machine,
+# which might result with invalid links generated in a PHP app.
+#fastcgi_param  SERVER_PORT       $server_port;
+
+# Using $http_host instead of $server_name - $server_name doesn't work correctly when using regexps in vhosts' server_name declaration.
+#fastcgi_param SERVER_NAME        $server_name;
+fastcgi_param  SERVER_NAME        $http_host;
 
 # PHP only, required if PHP was built with --enable-force-cgi-redirect
 fastcgi_param  REDIRECT_STATUS    200;
