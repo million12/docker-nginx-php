@@ -8,8 +8,9 @@ RUN \
   yum-config-manager -q --enable remi && \
   yum-config-manager -q --enable remi-php55 && \
 
-  yum install -y php-fpm php-bcmath php-cli php-gd php-intl php-mbstring php-mcrypt \
-                 php-mysql php-opcache php-pdo php-pecl-redis php-pecl-yaml && \
+  yum install -y php-fpm php-bcmath php-cli php-gd php-intl php-mbstring \
+                  php-mcrypt php-mysql php-opcache php-pdo && \
+  yum install -y --disablerepo=epel php-pecl-redis php-pecl-yaml && \
   yum clean all && \
 
   curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
