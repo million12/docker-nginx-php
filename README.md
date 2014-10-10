@@ -27,6 +27,24 @@ Default vhost is configured and served from `/data/www/default`. Add .php file t
 
 PHP errors are forwarded to stderr (by leaving empty value for INI error_log setting) and captured by supervisor. You can see them easily via `docker logs [container]`. In addition, they are captured by parent Nginx worker and logged to `/data/logs/nginx-error.log'. PHP-FPM logs are available in `/data/logs/php-fpm*.log` files. 
 
+##### - pre-defined FastCGI cache for PHP backend
+
+It's not used until specified in location {} context. In your vhost config you can add something like this:  
+```
+location ~ \.php$ {
+    # Your standard directives...
+    include               fastcgi_params;
+    fastcgi_pass          php-upstream;
+    
+    # Use the configured cache (adjust fastcgi_cache_valid to your needs):
+    fastcgi_cache         APPCACHE;
+    fastcgi_cache_valid   60m;
+}
+```  
+As you can see in [fastcgi-cache.conf](container-files/etc/nginx/addon.d/fastcgi-cache.conf), the cache is stored in `/run/user/nginx-cache` directory. To achieve best performance, bind it to host directory on tmpfs volume. Often, the `/run` directory is on tmpfs volume, so your docker run command could look like:  
+```
+docker run ... -v /run/user/my-container:/run/user ...
+```
 
 ## Usage
 
