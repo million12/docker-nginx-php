@@ -1,4 +1,5 @@
 # Nginx + PHP-FPM docker container
+[![Circle CI](https://circleci.com/gh/million12/docker-nginx-php.svg?style=svg)](https://circleci.com/gh/million12/docker-nginx-php)
 
 This is a [million12/nginx-php](https://registry.hub.docker.com/u/million12/nginx-php/) docker container with Nginx + PHP-FPM combo.
 

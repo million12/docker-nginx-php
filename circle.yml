@@ -1,0 +1,28 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  pre:
+    - docker info && docker version
+    
+  override:
+    - docker pull million12/nginx:latest
+
+# Run tests
+test:
+  pre:
+    - docker build -t million12/nginx-php .
+
+  override:
+    # Launch it
+    - docker run -d -p 8080:80 --name nginx million12/nginx-php
+    - while true; do if docker logs nginx | grep "nginx entered RUNNING state"; then break; else sleep 1; fi done
+    # Add phpinfo
+    - docker run -ti --volumes-from nginx million12/nginx-php "echo '<?php phpinfo();' >> /data/www/default/index.php"
+    # Check phpinfo page
+    - curl -s --show-error http://localhost:8080 | grep 'PHP Version 5.5'
+    
+    # Check if we have PECL extensions installed / loaded
+    - curl -s --show-error http://localhost:8080 | grep 'LibYAML Support'
+    - curl -s --show-error http://localhost:8080 | grep 'Redis Version'
