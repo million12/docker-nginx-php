@@ -2,7 +2,8 @@
 # Pre-configured FastCGI cache.
 # It's not used until specified in location {} context.
 #
-# Usage: in your vhost config add something like this:
+# Usage: rename this file to fastcgi-cache.conf
+# and your vhost config add something like this:
 # location ~ \.php$ {
 #   include               fastcgi_params;
 #   fastcgi_pass          php-upstream;
