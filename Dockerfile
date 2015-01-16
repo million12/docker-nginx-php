@@ -13,6 +13,7 @@ RUN \
   yum install -y --disablerepo=epel php-pecl-redis php-pecl-yaml && \
   yum clean all && \
 
-  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+  chown www /usr/local/bin/composer
 
 ADD container-files /
