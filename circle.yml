@@ -21,7 +21,7 @@ test:
     # Add phpinfo
     - docker run -ti --volumes-from nginx million12/nginx-php "echo '<?php phpinfo();' >> /data/www/default/index.php"
     # Check phpinfo page
-    - curl -s --show-error http://localhost:8080 | grep 'PHP Version 5.5'
+    - curl -s --show-error http://localhost:8080 | grep 'PHP Version 5.6'
     
     # Check if we have PECL extensions installed / loaded
     - curl -s --show-error http://localhost:8080 | grep 'LibYAML Support'

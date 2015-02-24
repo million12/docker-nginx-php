@@ -6,7 +6,7 @@ RUN \
   
   rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm && \
   yum-config-manager -q --enable remi && \
-  yum-config-manager -q --enable remi-php55 && \
+  yum-config-manager -q --enable remi-php56 && \
 
   yum install -y php-fpm php-bcmath php-cli php-gd php-intl php-mbstring \
                   php-mcrypt php-mysql php-opcache php-pdo && \
