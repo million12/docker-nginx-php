@@ -7,11 +7,13 @@ Things included:
 
 ##### - PHP-FPM configured
 
-PHP is up & running for default vhost. As soon as .php file is requested, the request will be redirected to PHP upstream. See [/etc/nginx/conf.d/php-location.conf](etc/nginx/conf.d/php-location.conf).
+**PHP 5.6** is up & running for default vhost. As soon as .php file is requested, the request will be redirected to PHP upstream. See [/etc/nginx/conf.d/php-location.conf](container-files/etc/nginx/conf.d/php-location.conf).
 
-File [/etc/nginx/fastcgi_params](etc/nginx/fastcgi_params) has improved configuration to avoid repeating same config options for each vhost. This config works well with most PHP applications (e.g. Symfony2, TYPO3, Wordpress, Drupal).
+File [/etc/nginx/fastcgi_params](container-files/etc/nginx/fastcgi_params) has improved configuration to avoid repeating same config options for each vhost. This config works well with most PHP applications (e.g. Symfony2, TYPO3, Wordpress, Drupal).
 
-Custom PHP.ini directives are inside [/etc/php.d/zz-php.ini](etc/php.d/zz-php.ini).
+Custom PHP.ini directives are inside [/etc/php.d/zz-php.ini](container-files/etc/php.d/zz-php.ini) and [/etc/php.d/zz-php-56.ini](container-files/etc/php.d/zz-php-php.ini).
+
+Note: use `million12/nginx-php:php-55` for PHP 5.5 version of that image.
 
 ##### - directory structure
 ```
