@@ -1,30 +1,33 @@
 # Nginx + PHP-FPM docker container
-[![Circle CI](https://circleci.com/gh/million12/docker-nginx-php.svg?style=svg)](https://circleci.com/gh/million12/docker-nginx-php)
+[![Circle CI](https://circleci.com/gh/million12/docker-nginx-php/tree/php-55.svg?style=svg)](https://circleci.com/gh/million12/docker-nginx-php/tree/php-55)
 
 This is a [million12/nginx-php](https://registry.hub.docker.com/u/million12/nginx-php/) docker container with Nginx + PHP-FPM combo.
 
-Things included:
+**Things included:**
 
-##### - PHP-FPM configured
+#### Nginx
 
-PHP is up & running for default vhost. As soon as .php file is requested, the request will be redirected to PHP upstream. See [/etc/nginx/conf.d/php-location.conf](etc/nginx/conf.d/php-location.conf).
+This image is based on [million12/nginx](https://github.com/million12/docker-nginx) - go there for more details.  
+**Default vhost** is configured and served from `/data/www/default`. Add .php file to that location to have it executed with PHP.
 
-File [/etc/nginx/fastcgi_params](etc/nginx/fastcgi_params) has improved configuration to avoid repeating same config options for each vhost. This config works well with most PHP applications (e.g. Symfony2, TYPO3, Wordpress, Drupal).
+#### - PHP-FPM
 
-Custom PHP.ini directives are inside [/etc/php.d/zz-php.ini](etc/php.d/zz-php.ini).
+**PHP 5.5** is up & running for default vhost. As soon as .php file is requested, the request will be redirected to PHP upstream. See [/etc/nginx/conf.d/php-location.conf](container-files/etc/nginx/conf.d/php-location.conf).
 
-##### - directory structure
+File [/etc/nginx/fastcgi_params](container-files/etc/nginx/fastcgi_params) has improved configuration to avoid repeating same config options for each vhost. This config works well with most PHP applications (e.g. Symfony2, TYPO3, Wordpress, Drupal).
+
+Custom PHP.ini directives are inside [/etc/php.d/zz-php.ini](container-files/etc/php.d/zz-php.ini) and [/etc/php.d/zz-php-56.ini](container-files/etc/php.d/zz-php-php.ini).
+
+Note: use `million12/nginx-php:php-55` for PHP 5.5 version of that image.
+
+#### Directory structure
 ```
 /data/www # meant to contain web content
 /data/www/default # default vhost directory
 /data/logs/ # Nginx, PHP logs
 ```
 
-##### - default vhost
-
-Default vhost is configured and served from `/data/www/default`. Add .php file to that location to have it executed with PHP.
-
-##### - error logging
+#### Error logging
 
 PHP errors are forwarded to stderr (by leaving empty value for INI error_log setting) and captured by supervisor. You can see them easily via `docker logs [container]`. In addition, they are captured by parent Nginx worker and logged to `/data/logs/nginx-error.log'. PHP-FPM logs are available in `/data/logs/php-fpm*.log` files. 
 
@@ -46,6 +49,12 @@ As you can see in [fastcgi-cache.conf](container-files/etc/nginx/addon.d/fastcgi
 ```
 docker run ... -v /run/user/my-container:/run/user ...
 ```
+
+#### Common dev tools for web app development
+
+* Ruby 2.0, Bundler
+* NodeJS and NPM
+* NPM packages like gulp, grunt, bower, browser-sync
 
 ## Usage
 
