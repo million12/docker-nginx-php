@@ -26,3 +26,10 @@ test:
     # Check if we have PECL extensions installed / loaded
     - curl -s --show-error http://localhost:8080 | grep 'LibYAML Support'
     - curl -s --show-error http://localhost:8080 | grep 'Redis Version'
+    
+    # Check if we have common dev tools working
+    - docker run -ti million12/nginx-php "ruby -v"
+    - docker run -ti million12/nginx-php "gem -v"
+    - docker run -ti million12/nginx-php "node -v"
+    - docker run -ti million12/nginx-php "npm -v"
+    - docker run -ti million12/nginx-php "gulp -v"
