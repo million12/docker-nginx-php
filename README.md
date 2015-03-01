@@ -3,9 +3,14 @@
 
 This is a [million12/nginx-php](https://registry.hub.docker.com/u/million12/nginx-php/) docker container with Nginx + PHP-FPM combo.
 
-Things included:
+**Things included:**
 
-##### - PHP-FPM configured
+#### Nginx
+
+This image is based on [million12/nginx](https://github.com/million12/docker-nginx) - go there for more details.  
+**Default vhost** is configured and served from `/data/www/default`. Add .php file to that location to have it executed with PHP.
+
+#### - PHP-FPM
 
 **PHP 5.6** is up & running for default vhost. As soon as .php file is requested, the request will be redirected to PHP upstream. See [/etc/nginx/conf.d/php-location.conf](container-files/etc/nginx/conf.d/php-location.conf).
 
@@ -15,18 +20,14 @@ Custom PHP.ini directives are inside [/etc/php.d/zz-php.ini](container-files/etc
 
 Note: use `million12/nginx-php:php-55` for PHP 5.5 version of that image.
 
-##### - directory structure
+#### Directory structure
 ```
 /data/www # meant to contain web content
 /data/www/default # default vhost directory
 /data/logs/ # Nginx, PHP logs
 ```
 
-##### - default vhost
-
-Default vhost is configured and served from `/data/www/default`. Add .php file to that location to have it executed with PHP.
-
-##### - error logging
+#### Error logging
 
 PHP errors are forwarded to stderr (by leaving empty value for INI error_log setting) and captured by supervisor. You can see them easily via `docker logs [container]`. In addition, they are captured by parent Nginx worker and logged to `/data/logs/nginx-error.log'. PHP-FPM logs are available in `/data/logs/php-fpm*.log` files. 
 
@@ -48,6 +49,12 @@ As you can see in [fastcgi-cache.conf](container-files/etc/nginx/addon.d/fastcgi
 ```
 docker run ... -v /run/user/my-container:/run/user ...
 ```
+
+#### Common dev tools for web app development
+
+* Ruby 2.0, Bundler
+* NodeJS and NPM
+* NPM packages like gulp, grunt, bower, browser-sync
 
 ## Usage
 
