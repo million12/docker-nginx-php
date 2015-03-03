@@ -15,13 +15,13 @@ RUN \
   `# Install common tools needed/useful during Web App development` \
   yum install -y git-core patch mysql tar bzip2 unzip wget GraphicsMagick && \
   `# Install Ruby 2 and NodeJS + some libs required by npm packages (PhantomJS requires zlib-devel, libpng-devel)` \
-  yum install -y ruby nodejs npm zlib-devel libpng-devel && \
+  yum install -y ruby ruby-devel nodejs npm zlib-devel libpng-devel && \
   
   yum clean all && \
   
   `# Update npm and install common npm packages: grunt, gulp, bower, browser-sync` \
   npm update -g npm && \
-  npm install -g gulp grunt bower browser-sync && \
+  npm install -g gulp grunt-cli bower browser-sync && \
   
   `# Update RubyGems, install Bundler` \
   echo 'gem: --no-document' > /etc/gemrc && gem update --system && gem install bundler && \
