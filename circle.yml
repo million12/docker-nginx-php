@@ -32,4 +32,5 @@ test:
     - docker run -ti million12/nginx-php "gem -v"
     - docker run -ti million12/nginx-php "node -v"
     - docker run -ti million12/nginx-php "npm -v"
+    - docker run -ti million12/nginx-php "grunt --version"
     - docker run -ti million12/nginx-php "gulp -v"
