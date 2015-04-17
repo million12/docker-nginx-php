@@ -21,11 +21,12 @@ test:
     # Add phpinfo
     - docker run -ti --volumes-from nginx million12/nginx-php "echo '<?php phpinfo();' >> /data/www/default/index.php"
     # Check phpinfo page
-    - curl -s --show-error http://localhost:8080 | grep 'PHP Version 5.6'
+    - curl -s --show-error http://localhost:8080 | grep 'PHP Version 7.0'
     
     # Check if we have PECL extensions installed / loaded
-    - curl -s --show-error http://localhost:8080 | grep 'LibYAML Support'
-    - curl -s --show-error http://localhost:8080 | grep 'Redis Version'
+    # Commented out, not installed for PHP 7.0
+#    - curl -s --show-error http://localhost:8080 | grep 'LibYAML Support'
+#    - curl -s --show-error http://localhost:8080 | grep 'Redis Version'
     
     # Check if we have common dev tools working
     - docker run -ti million12/nginx-php "ruby -v"

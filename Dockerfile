@@ -2,15 +2,18 @@ FROM million12/nginx:latest
 MAINTAINER Marcin Ryzycki <marcin@m12.io>
 
 RUN \
+  yum update -y --disablerepo=updates || yum update -y && \
   yum install -y yum-utils && \
   
-  `# Install PHP 5.6` \
+  `# Install PHP 7.0 from packages available in remi-test` \
   rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm && \
   yum-config-manager -q --enable remi && \
-  yum-config-manager -q --enable remi-php56 && \
-  yum install -y php-fpm php-bcmath php-cli php-gd php-intl php-mbstring \
-                  php-mcrypt php-mysql php-opcache php-pdo && \
-  yum install -y --disablerepo=epel php-pecl-redis php-pecl-yaml && \
+  yum-config-manager -q --enable remi-test && \
+  yum install -y php70 php70-runtime php70-php-bcmath php70-php-cli php70-php-common php70-php-fpm \
+                  php70-php-gd php70-php-json php70-php-mysqlnd php70-php-opcache php70-php-pdo \
+                  php70-php-xml php70-php-zip && \
+  `# Set env variables, PATH etc, also put it in /etc/profile + make a php alias to php70, so the php command is present no matter if /etc/profile has been loaded or not...` \
+  source /opt/remi/php70/enable && ln -s /opt/remi/php70/enable /etc/profile.d/php70.sh && ln -s /usr/bin/php70 /usr/bin/php && \
   
   `# Install common tools needed/useful during Web App development` \
   yum install -y git-core patch mysql tar bzip2 unzip wget GraphicsMagick && \
