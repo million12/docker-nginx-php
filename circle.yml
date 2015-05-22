@@ -3,17 +3,11 @@ machine:
     - docker
 
 dependencies:
-  pre:
-    - docker info && docker version
-    
   override:
-    - docker pull million12/nginx:latest
+    - docker build -t million12/nginx-php .
 
 # Run tests
 test:
-  pre:
-    - docker build -t million12/nginx-php .
-
   override:
     # Launch it
     - docker run -d -p 8080:80 --name nginx million12/nginx-php
