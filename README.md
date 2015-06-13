@@ -83,6 +83,12 @@ There are several ways to customise this container, both in a runtime or when bu
 * Add custom PHP `*.ini` files to `/etc/php.d/`.
 * Add own PHP-FPM .conf files to `/data/conf/php-fpm-www-*.conf` to modify PHP-FPM www pool.
 
+## ENV variables
+
+**STATUS_PAGE_ALLOWED_IP**  
+Default: `STATUS_PAGE_ALLOWED_IP=127.0.0.1`  
+Example: `STATUS_PAGE_ALLOWED_IP=10.1.1.0/16`  
+Configure ip address that would be allowed to see PHP-FPM status page on `/fpm_status` URL.
 
 ## Authors
 

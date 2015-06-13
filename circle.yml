@@ -29,3 +29,16 @@ test:
     - docker run -ti million12/nginx-php "npm -v"
     - docker run -ti million12/nginx-php "grunt --version"
     - docker run -ti million12/nginx-php "gulp -v"
+    - docker rm -f nginx || true
+
+    # Check if status page for PHP-FPM is working
+    - docker run -d -p 80:80 --name nginx million12/nginx-php
+    - while true; do if docker logs nginx | grep "nginx entered RUNNING state"; then break; else sleep 1; fi done
+    - curl -sSLi http://localhost/fpm_status | grep "HTTP/1.1 403 Forbidden"
+    - docker rm -f nginx || true
+
+    - docker run -d -p 80:80 --name nginx --env="STATUS_PAGE_ALLOWED_IP=$(ip -4 addr show docker0 | grep inet | cut -d/ -f1 | awk '{print $2}')" million12/nginx-php
+    - while true; do if docker logs nginx | grep "nginx entered RUNNING state"; then break; else sleep 1; fi done
+    - curl -sSLi http://localhost/fpm_status
+    - curl -sSLi http://localhost/fpm_status | grep "HTTP/1.1 200 OK"
+    - curl -sSLi http://localhost/fpm_status | grep "start time"
