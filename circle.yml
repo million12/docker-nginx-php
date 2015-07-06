@@ -7,13 +7,11 @@ dependencies:
     - docker info && docker version
     
   override:
-    - docker pull million12/nginx:latest
+    - docker pull million12/nginx
+    - docker build -t million12/nginx-php .
 
 # Run tests
 test:
-  pre:
-    - docker build -t million12/nginx-php .
-
   override:
     # Launch it
     - docker run -d -p 8080:80 --name nginx million12/nginx-php
@@ -28,6 +26,7 @@ test:
     - curl -s --show-error http://localhost:8080 | grep 'Redis Version'
     
     # Check if we have common dev tools working
+    - docker run -ti million12/nginx-php "git --version"
     - docker run -ti million12/nginx-php "ruby -v"
     - docker run -ti million12/nginx-php "gem -v"
     - docker run -ti million12/nginx-php "node -v"
