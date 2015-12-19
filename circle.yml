@@ -4,6 +4,7 @@ machine:
 
 dependencies:
   override:
+    - docker pull million12/nginx
     - docker build -t million12/nginx-php .
 
 # Run tests
@@ -16,13 +17,14 @@ test:
     - docker run -ti --volumes-from nginx million12/nginx-php "echo '<?php phpinfo();' >> /data/www/default/index.php"
     # Check phpinfo page
     - curl -s --show-error http://localhost:8080 | grep 'PHP Version 7.0'
-    
+
     # Check if we have PECL extensions installed / loaded
     # Commented out, not installed for PHP 7.0
 #    - curl -s --show-error http://localhost:8080 | grep 'LibYAML Support'
 #    - curl -s --show-error http://localhost:8080 | grep 'Redis Version'
-    
+
     # Check if we have common dev tools working
+    - docker run -ti million12/nginx-php "git --version"
     - docker run -ti million12/nginx-php "ruby -v"
     - docker run -ti million12/nginx-php "gem -v"
     - docker run -ti million12/nginx-php "node -v"
