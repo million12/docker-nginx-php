@@ -4,15 +4,19 @@
 This is a [million12/nginx-php](https://registry.hub.docker.com/u/million12/nginx-php/) docker container with Nginx + PHP-FPM combo.
 
 For different PHP versions, look up different branches of this repository. On Docker Hub you can find them under different tags:  
-* `million12/nginx-php:latest` - PHP 7.0, alias to `:php-70`
-* `million12/nginx-php:php-70` - PHP 7.0
-* `million12/nginx-php:php-56` - PHP 5.6
-* `million12/nginx-php:php-55` - PHP 5.5
+* `million12/nginx-php:latest` - PHP 7.0 # built from `master` branch
+* `million12/nginx-php:php-70` - PHP 7.0 # built from `php-70` branch
+* `million12/nginx-php:php-56` - PHP 5.6 # built from `php-56` branch
+* `million12/nginx-php:php-55` - PHP 5.5 # built from `php-55` branch
 
+# BREAKING CHANGES (2015-12-19) !!!
+###  `million12/nginx-php:latest` is now PHP 7.0 !!!
+Since **PHP 7** has been released, we retagged `:latest` Docker image tag so it now contains **PHP 7.x** version.  
+For **PHP 5.6** (old `:latest`) is now available as `million12/nginx-php:php-56`.
 
-#### Things included:
+# Things included:
 
-#### Nginx
+#### - Nginx
 
 This image is based on [million12/nginx](https://github.com/million12/docker-nginx) - go there for more details.  
 **Default vhost** is configured and served from `/data/www/default`. Add .php file to that location to have it executed with PHP.
@@ -23,10 +27,16 @@ This image is based on [million12/nginx](https://github.com/million12/docker-ngi
 
 File [/etc/nginx/fastcgi_params](container-files/etc/nginx/fastcgi_params) has improved configuration to avoid repeating same config options for each vhost. This config works well with most PHP applications (e.g. Symfony2, TYPO3, Wordpress, Drupal).
 
+#### - PHP basic tuning
 Custom PHP.ini directives are inside [/etc/php.d](container-files/etc/php.d/).
 
+#### - Common dev tools for web app development
+* Ruby 2.0, Bundler
+* NodeJS and NPM
+* NPM packages like gulp, grunt, bower, browser-sync
 
-#### Directory structure
+
+# Directory structure inside image
 ```
 /data/www # meant to contain web content
 /data/www/default # root directory for the default vhost
@@ -34,7 +44,7 @@ Custom PHP.ini directives are inside [/etc/php.d](container-files/etc/php.d/).
 /data/tmp/php/ # PHP temp directories
 ```
 
-#### Error logging
+# Error logging
 
 PHP errors are forwarded to stderr (by leaving empty value for INI error_log setting) and captured by supervisor. You can see them easily via `docker logs [container]`. In addition, they are captured by parent Nginx worker and logged to `/data/logs/nginx-error.log'. PHP-FPM logs are available in `/data/logs/php-fpm*.log` files.
 
@@ -53,13 +63,8 @@ location ~ \.php$ {
 }
 ```
 
-#### Common dev tools for web app development
 
-* Ruby 2.0, Bundler
-* NodeJS and NPM
-* NPM packages like gulp, grunt, bower, browser-sync
-
-## Usage
+# Usage
 
 ```
 docker run -d -v /data --name=web-data busybox
@@ -71,7 +76,7 @@ After that you can see the default vhost content (something like: '*default vhos
 You can replace `/data/www/default/index.html` with `index.php` and, for instance, phpinfo() to inspect installed PHP setup. You can do that using separate container which mounts /data volume (`docker run -ti --volumes-from=web-data --rm busybox`) and adding the file to the above location.
 
 
-## Customise
+# Customise
 
 There are several ways to customise this container, both in a runtime or when building new image on top of it:
 
@@ -93,7 +98,7 @@ Default: `STATUS_PAGE_ALLOWED_IP=127.0.0.1`
 Example: `STATUS_PAGE_ALLOWED_IP=10.1.1.0/16`  
 Configure ip address that would be allowed to see PHP-FPM status page on `/fpm_status` URL.
 
-## Authors
+# Authors
 
 Author: ryzy (<marcin@m12.io>)  
 Author: pozgo (<linux@ozgo.info>)
