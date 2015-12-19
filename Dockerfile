@@ -1,6 +1,7 @@
 FROM million12/nginx:latest
 MAINTAINER Marcin Ryzycki <marcin@m12.io>
 
+# Add install scripts needed by the next RUN command
 ADD container-files/config/install* /config/
 
 RUN \
@@ -8,13 +9,46 @@ RUN \
   `# Install yum-utils (provides yum-config-manager) + some basic web-related tools...` \
   yum install -y yum-utils wget patch mysql tar bzip2 unzip openssh-clients rsync && \
 
-  `# Install PHP 5.6` \
-  rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm && \
-  yum-config-manager -q --enable remi && \
-  yum-config-manager -q --enable remi-php56 && \
-  yum install -y php-fpm php-bcmath php-cli php-gd php-intl php-mbstring \
-                  php-pecl-imagick php-mcrypt php-mysql php-opcache php-pdo && \
-  yum install -y --disablerepo=epel php-pecl-redis php-pecl-yaml && \
+  `# Install PHP 7.0 from Remi YUM repository...` \
+  rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
+
+  yum install -y \
+    php70-php \
+    php70-php-bcmath \
+    php70-php-cli \
+    php70-php-common \
+    php70-php-devel \
+    php70-php-fpm \
+    php70-php-gd \
+    php70-php-gmp \
+    php70-php-horde-horde-lz4 \
+    php70-php-intl \
+    php70-php-json \
+    php70-php-mbstring \
+    php70-php-mcrypt \
+    php70-php-mysqlnd \
+    php70-php-opcache \
+    php70-php-pdo \
+    php70-php-pear \
+    php70-php-process \
+    php70-php-pspell \
+
+    `# Also install the following PECL packages:` \
+    php70-php-pecl-http \
+    php70-php-pecl-imagick \
+    php70-php-pecl-memcached \
+    php70-php-pecl-uploadprogress \
+    php70-php-pecl-uuid \
+    php70-php-pecl-yaml \
+    php70-php-pecl-zip \
+
+  `# Set PATH so it includes newest PHP and its aliases` \
+  source /opt/remi/php70/enable && ln -s /opt/remi/php70/enable /etc/profile.d/php70-paths.sh && \
+
+  `# Make a 'php' alias to 'php70', so the 'php' command is present for the next commands...` \
+  ln -s /usr/bin/php70 /usr/bin/php && \
+
+  echo 'PHP 7.0 installed.' && \
 
   `# Install libs required to build some gem/npm packages (e.g. PhantomJS requires zlib-devel, libpng-devel)` \
   yum install -y ImageMagick GraphicsMagick gcc gcc-c++ libffi-devel libpng-devel zlib-devel && \

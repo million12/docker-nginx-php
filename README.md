@@ -1,12 +1,13 @@
 # Nginx + PHP-FPM docker container
 [![Circle CI](https://circleci.com/gh/million12/docker-nginx-php/tree/master.svg?style=svg)](https://circleci.com/gh/million12/docker-nginx-php/tree/master)
 
-This is a [million12/nginx-php](https://registry.hub.docker.com/u/million12/nginx-php/) docker container with Nginx + PHP-FPM combo. 
+This is a [million12/nginx-php](https://registry.hub.docker.com/u/million12/nginx-php/) docker container with Nginx + PHP-FPM combo.
 
-For different PHP versions, look up different branches of this repository. On Docker Hub you can find them under different tags:    
-* `million12/nginx-php:latest` - PHP 5.6 (master branch)
-* `million12/nginx-php:php-55` - PHP 5.5 ([php-55](https://github.com/million12/docker-nginx-php/tree/php-55) branch)
-* `million12/nginx-php:php-70` - PHP 7.0-dev aka PHPNG ([php-70](https://github.com/million12/docker-nginx-php/tree/php-70) branch)
+For different PHP versions, look up different branches of this repository. On Docker Hub you can find them under different tags:  
+* `million12/nginx-php:latest` - PHP 7.0, alias to `:php-70`
+* `million12/nginx-php:php-70` - PHP 7.0
+* `million12/nginx-php:php-56` - PHP 5.6
+* `million12/nginx-php:php-55` - PHP 5.5
 
 
 #### Things included:
@@ -18,11 +19,12 @@ This image is based on [million12/nginx](https://github.com/million12/docker-ngi
 
 #### - PHP-FPM
 
-**PHP 5.6** is up & running for default vhost. As soon as .php file is requested, the request will be redirected to PHP upstream. See [/etc/nginx/conf.d/php-location.conf](container-files/etc/nginx/conf.d/php-location.conf).
+**PHP 7.0** is up & running for default vhost. As soon as .php file is requested, the request will be redirected to PHP upstream. See [/etc/nginx/conf.d/php-location.conf](container-files/etc/nginx/conf.d/php-location.conf).
 
 File [/etc/nginx/fastcgi_params](container-files/etc/nginx/fastcgi_params) has improved configuration to avoid repeating same config options for each vhost. This config works well with most PHP applications (e.g. Symfony2, TYPO3, Wordpress, Drupal).
 
 Custom PHP.ini directives are inside [/etc/php.d](container-files/etc/php.d/).
+
 
 #### Directory structure
 ```
@@ -34,7 +36,7 @@ Custom PHP.ini directives are inside [/etc/php.d](container-files/etc/php.d/).
 
 #### Error logging
 
-PHP errors are forwarded to stderr (by leaving empty value for INI error_log setting) and captured by supervisor. You can see them easily via `docker logs [container]`. In addition, they are captured by parent Nginx worker and logged to `/data/logs/nginx-error.log'. PHP-FPM logs are available in `/data/logs/php-fpm*.log` files. 
+PHP errors are forwarded to stderr (by leaving empty value for INI error_log setting) and captured by supervisor. You can see them easily via `docker logs [container]`. In addition, they are captured by parent Nginx worker and logged to `/data/logs/nginx-error.log'. PHP-FPM logs are available in `/data/logs/php-fpm*.log` files.
 
 ##### - pre-defined FastCGI cache for PHP backend
 
@@ -44,7 +46,7 @@ location ~ \.php$ {
     # Your standard directives...
     include               fastcgi_params;
     fastcgi_pass          php-upstream;
-    
+
     # Use the configured cache (adjust fastcgi_cache_valid to your needs):
     fastcgi_cache         APPCACHE;
     fastcgi_cache_valid   60m;

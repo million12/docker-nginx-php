@@ -20,14 +20,13 @@ test:
     # Launch it
     - docker run -d -p 8080:80 --name nginx --env="NGINX_GENERATE_DEFAULT_VHOST=true" million12/nginx-php
     - while true; do if docker logs nginx | grep "nginx entered RUNNING state"; then break; else sleep 1; fi done
-    # Add phpinfo // not needed anymore, automatically generated when NGINX_GENERATE_DEFAULT_VHOST=true
-#    - docker run -ti --volumes-from nginx million12/nginx-php "echo '<?php phpinfo();' >> /data/www/default/index.php"
-    # Check phpinfo page
-    - curl -s --show-error http://localhost:8080 | grep 'PHP Version 5.6'
+    # Check phpinfo page (we have it because NGINX_GENERATE_DEFAULT_VHOST is set)
+    - curl -s --show-error http://localhost:8080 | grep 'PHP Version 7.0'
 
     # Check if we have PECL extensions installed / loaded
     - curl -s --show-error http://localhost:8080 | grep 'LibYAML Support'
-    - curl -s --show-error http://localhost:8080 | grep 'Redis Version'
+    # Commented out, not available yet for PHP 7.0
+#    - curl -s --show-error http://localhost:8080 | grep 'Redis Version'
 
     # Check if we have common dev tools working
     - docker run -ti million12/nginx-php "git --version"
