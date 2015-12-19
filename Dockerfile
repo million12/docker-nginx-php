@@ -35,6 +35,7 @@ RUN \
 
     `# Also install the following PECL packages:` \
     php70-php-pecl-http \
+    php70-php-pecl-imagick \
     php70-php-pecl-memcached \
     php70-php-pecl-uploadprogress \
     php70-php-pecl-uuid \
@@ -45,7 +46,7 @@ RUN \
   source /opt/remi/php70/enable && ln -s /opt/remi/php70/enable /etc/profile.d/php70-paths.sh && \
 
   `# Install libs required to build some gem/npm packages (e.g. PhantomJS requires zlib-devel, libpng-devel)` \
-  yum install -y GraphicsMagick gcc gcc-c++ libffi-devel libpng-devel zlib-devel && \
+  yum install -y ImageMagick GraphicsMagick gcc gcc-c++ libffi-devel libpng-devel zlib-devel && \
 
   `# Install common tools needed/useful during Web App development` \
 
