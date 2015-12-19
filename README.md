@@ -1,12 +1,13 @@
 # Nginx + PHP-FPM docker container
-[![Circle CI](https://circleci.com/gh/million12/docker-nginx-php/tree/php-70.svg?style=svg)](https://circleci.com/gh/million12/docker-nginx-php/tree/php-70)
+[![Circle CI](https://circleci.com/gh/million12/docker-nginx-php/tree/master.svg?style=svg)](https://circleci.com/gh/million12/docker-nginx-php/tree/master)
 
 This is a [million12/nginx-php](https://registry.hub.docker.com/u/million12/nginx-php/) docker container with Nginx + PHP-FPM combo.
 
 For different PHP versions, look up different branches of this repository. On Docker Hub you can find them under different tags:  
-* `million12/nginx-php:latest` - PHP 5.6 (master branch)
-* `million12/nginx-php:php-55` - PHP 5.6 ([php-55](https://github.com/million12/docker-nginx-php/tree/php-55) branch)
-* `million12/nginx-php:php-70` - PHP 7.0-dev aka PHPNG ([php-70](https://github.com/million12/docker-nginx-php/tree/php-70) branch)
+* `million12/nginx-php:latest` - PHP 7.0, alias to `:php-70`
+* `million12/nginx-php:php-70` - PHP 7.0
+* `million12/nginx-php:php-56` - PHP 5.6
+* `million12/nginx-php:php-55` - PHP 5.5
 
 
 #### Things included:
@@ -22,20 +23,21 @@ This image is based on [million12/nginx](https://github.com/million12/docker-ngi
 
 File [/etc/nginx/fastcgi_params](container-files/etc/nginx/fastcgi_params) has improved configuration to avoid repeating same config options for each vhost. This config works well with most PHP applications (e.g. Symfony2, TYPO3, Wordpress, Drupal).
 
-Custom PHP.ini directives are inside [/etc/php.d/zz-php.ini](container-files/etc/php.d/zz-php.ini) and [/etc/php.d/zz-php-56.ini](container-files/etc/php.d/zz-php-php.ini).
+Custom PHP.ini directives are inside [/etc/php.d](container-files/etc/php.d/).
 
 Note: use `million12/nginx-php:php-55` for PHP 5.5 version of that image.
 
 #### Directory structure
 ```
 /data/www # meant to contain web content
-/data/www/default # default vhost directory
+/data/www/default # root directory for the default vhost
 /data/logs/ # Nginx, PHP logs
+/data/tmp/php/ # PHP temp directories
 ```
 
 #### Error logging
 
-PHP errors are forwarded to stderr (by leaving empty value for INI error_log setting) and captured by supervisor. You can see them easily via `docker logs [container]`. In addition, they are captured by parent Nginx worker and logged to `/data/logs/nginx-error.log'. PHP-FPM logs are available in `/data/logs/php-fpm*.log` files. 
+PHP errors are forwarded to stderr (by leaving empty value for INI error_log setting) and captured by supervisor. You can see them easily via `docker logs [container]`. In addition, they are captured by parent Nginx worker and logged to `/data/logs/nginx-error.log'. PHP-FPM logs are available in `/data/logs/php-fpm*.log` files.
 
 ##### - pre-defined FastCGI cache for PHP backend
 
@@ -45,15 +47,11 @@ location ~ \.php$ {
     # Your standard directives...
     include               fastcgi_params;
     fastcgi_pass          php-upstream;
-    
+
     # Use the configured cache (adjust fastcgi_cache_valid to your needs):
     fastcgi_cache         APPCACHE;
     fastcgi_cache_valid   60m;
 }
-```  
-As you can see in [fastcgi-cache.conf](container-files/etc/nginx/addon.d/fastcgi-cache.conf), the cache is stored in `/run/user/nginx-cache` directory. To achieve best performance, bind it to host directory on tmpfs volume. Often, the `/run` directory is on tmpfs volume, so your docker run command could look like:  
-```
-docker run ... -v /run/user/my-container:/run/user ...
 ```
 
 #### Common dev tools for web app development
@@ -84,6 +82,12 @@ There are several ways to customise this container, both in a runtime or when bu
 * Add own PHP-FPM .conf files to `/data/conf/php-fpm-www-*.conf` to modify PHP-FPM www pool.
 
 ## ENV variables
+
+**NGINX_GENERATE_DEFAULT_VHOST**  
+Default: `NGINX_GENERATE_DEFAULT_VHOST=false`  
+Example: `NGINX_GENERATE_DEFAULT_VHOST=true`  
+When set to `true`, dummy default (*catch-all*) Nginx vhost config file will be generated in `/etc/nginx/hosts.d/default.conf`. In addition, default index.php file will be created displaying results of `phpinfo()`. **Caveat**: this causes security leak because you expose detailed PHP configuration - remember to remove it on production!
+Use it if you need it, for example to test that your Nginx is working correctly AND/OR if you don't create default vhost config for your app but you still want some dummy catch-all vhost.
 
 **STATUS_PAGE_ALLOWED_IP**  
 Default: `STATUS_PAGE_ALLOWED_IP=127.0.0.1`  
