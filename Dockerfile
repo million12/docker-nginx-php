@@ -42,8 +42,13 @@ RUN \
     php70-php-pecl-yaml \
     php70-php-pecl-zip \
 
-  `# Set env variables, PATH etc, also put it in /etc/profile + make a php alias to php70, so the php command is present no matter if /etc/profile has been loaded or not...` \
+  `# Set PATH so it includes newest PHP and its aliases` \
   source /opt/remi/php70/enable && ln -s /opt/remi/php70/enable /etc/profile.d/php70-paths.sh && \
+
+  `# Make a 'php' alias to 'php70', so the 'php' command is present for the next commands...` \
+  ln -s /usr/bin/php70 /usr/bin/php && \
+
+  echo 'PHP 7.0 installed.' && \
 
   `# Install libs required to build some gem/npm packages (e.g. PhantomJS requires zlib-devel, libpng-devel)` \
   yum install -y ImageMagick GraphicsMagick gcc gcc-c++ libffi-devel libpng-devel zlib-devel && \
