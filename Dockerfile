@@ -41,15 +41,18 @@ RUN \
     php70-php-pecl-yaml \
     php70-php-pecl-zip \
 
+    `# Temporary workaround: one dependant package (http, not essential?) fails to install` \
+    || true && \
+
   `# Set PATH so it includes newest PHP and its aliases` \
-  source /opt/remi/php70/enable && ln -s /opt/remi/php70/enable /etc/profile.d/php70-paths.sh && \
+  ln -sfF /opt/remi/php70/enable /etc/profile.d/php70-paths.sh && \
+  ls -al /etc/profile.d/ && cat /etc/profile.d/php70-paths.sh && \
+  source /etc/profile.d/php70-paths.sh && \
+  php --version && \
 
   `# Move PHP config files from /etc/opt/remi/php70/* to /etc/* ` \
   mv -f /etc/opt/remi/php70/php.ini /etc/php.ini && ln -s /etc/php.ini /etc/opt/remi/php70/php.ini && \
   rm -rf /etc/php.d && mv /etc/opt/remi/php70/php.d /etc/. && ln -s /etc/php.d /etc/opt/remi/php70/php.d && \
-
-  `# Make a 'php' alias to 'php70', so the 'php' command is present for the next commands...` \
-  ln -s /usr/bin/php70 /usr/bin/php && \
 
   echo 'PHP 7 installed.' && \
 

@@ -20,12 +20,14 @@ test:
     # Launch it
     - docker run -d -p 8080:80 --name nginx --env="NGINX_GENERATE_DEFAULT_VHOST=true" million12/nginx-php
     - while true; do if docker logs nginx | grep "nginx entered RUNNING state"; then break; else sleep 1; fi done
+    - curl -Ssi http://localhost:8080
+    - curl -Ssi http://localhost:8080 | grep '200 OK'
+
     # Check phpinfo page (we have it because NGINX_GENERATE_DEFAULT_VHOST is set)
     - curl -Ssi http://localhost:8080 | grep 'PHP Version 7'
-    - curl -Ssi http://localhost:8080 | grep 'Zend Engine'
 
     # Check if custom php.ini directives are applied
-    - curl -Ssi http://docker:32775/ | grep memory_limit | grep 512M
+    - curl -Ssi http://localhost:8080 | grep memory_limit | grep 512M
 
     # Check if we have PECL extensions installed / loaded
     - curl -Ssi http://localhost:8080 | grep 'LibYAML Support'
