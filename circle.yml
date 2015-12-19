@@ -3,31 +3,38 @@ machine:
     - docker
 
 dependencies:
-  pre:
-    - docker info && docker version
-    
   override:
-    - docker pull million12/nginx:latest
+    - docker build -t million12/nginx-php .
+
+    # Do basic test in `dependencies` section - it doesn't make to continue if it fails here
+    - docker run -d --name nginx million12/nginx-php
+    - docker logs -f nginx > ${CIRCLE_ARTIFACTS}/docker-nginx.log:
+        background: true
+    - sleep 3
+    - docker logs nginx | grep "nginx entered RUNNING state"
+    - docker rm -f nginx || true
 
 # Run tests
 test:
-  pre:
-    - docker build -t million12/nginx-php .
-
   override:
     # Launch it
-    - docker run -d -p 8080:80 --name nginx million12/nginx-php
+    - docker run -d -p 8080:80 --name nginx --env="NGINX_GENERATE_DEFAULT_VHOST=true" million12/nginx-php
     - while true; do if docker logs nginx | grep "nginx entered RUNNING state"; then break; else sleep 1; fi done
-    # Add phpinfo
-    - docker run -ti --volumes-from nginx million12/nginx-php "echo '<?php phpinfo();' >> /data/www/default/index.php"
-    # Check phpinfo page
-    - curl -s --show-error http://localhost:8080 | grep 'PHP Version 5.5'
-    
+    - curl -Ssi http://localhost:8080
+    - curl -Ssi http://localhost:8080 | grep '200 OK'
+
+    # Check phpinfo page (we have it because NGINX_GENERATE_DEFAULT_VHOST is set)
+    - curl -Ssi http://localhost:8080 | grep 'PHP Version 5.5'
+
+    # Check if custom php.ini directives are applied
+    - curl -Ssi http://localhost:8080 | grep memory_limit | grep 512M
+
     # Check if we have PECL extensions installed / loaded
-    - curl -s --show-error http://localhost:8080 | grep 'LibYAML Support'
-    - curl -s --show-error http://localhost:8080 | grep 'Redis Version'
-    
+    - curl -Ssi http://localhost:8080 | grep 'LibYAML Support'
+    - curl -Ssi http://localhost:8080 | grep 'Redis Version'
+
     # Check if we have common dev tools working
+    - docker run -ti million12/nginx-php "git --version"
     - docker run -ti million12/nginx-php "ruby -v"
     - docker run -ti million12/nginx-php "gem -v"
     - docker run -ti million12/nginx-php "node -v"
@@ -37,13 +44,13 @@ test:
     - docker rm -f nginx || true
 
     # Check if status page for PHP-FPM is working
-    - docker run -d -p 80:80 --name nginx million12/nginx-php
+    - docker run -d -p 80:80 --name nginx --env="NGINX_GENERATE_DEFAULT_VHOST=true" million12/nginx-php
     - while true; do if docker logs nginx | grep "nginx entered RUNNING state"; then break; else sleep 1; fi done
-    - curl -sSLi http://localhost/fpm_status | grep "HTTP/1.1 403 Forbidden"
+    - curl -Ssi http://localhost/fpm_status | grep "HTTP/1.1 403 Forbidden"
     - docker rm -f nginx || true
 
-    - docker run -d -p 80:80 --name nginx --env="STATUS_PAGE_ALLOWED_IP=$(ip -4 addr show docker0 | grep inet | cut -d/ -f1 | awk '{print $2}')" million12/nginx-php
+    - docker run -d -p 80:80 --name nginx --env="NGINX_GENERATE_DEFAULT_VHOST=true" --env="STATUS_PAGE_ALLOWED_IP=$(ip -4 addr show docker0 | grep inet | cut -d/ -f1 | awk '{print $2}')" million12/nginx-php
     - while true; do if docker logs nginx | grep "nginx entered RUNNING state"; then break; else sleep 1; fi done
-    - curl -sSLi http://localhost/fpm_status
-    - curl -sSLi http://localhost/fpm_status | grep "HTTP/1.1 200 OK"
-    - curl -sSLi http://localhost/fpm_status | grep "start time"
+    - curl -Ssi http://localhost/fpm_status
+    - curl -Ssi http://localhost/fpm_status | grep "HTTP/1.1 200 OK"
+    - curl -Ssi http://localhost/fpm_status | grep "start time"
