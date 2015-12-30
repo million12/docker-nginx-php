@@ -38,7 +38,6 @@ RUN \
     php70-php-pecl-memcached \
     php70-php-pecl-uploadprogress \
     php70-php-pecl-uuid \
-    php70-php-pecl-yaml \
     php70-php-pecl-zip \
 
     `# Temporary workaround: one dependant package (http, not essential?) fails to install` \
