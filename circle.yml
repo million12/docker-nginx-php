@@ -30,7 +30,6 @@ test:
     - curl -Ssi http://localhost:8080 | grep memory_limit | grep 512M
 
     # Check if we have PECL extensions installed / loaded
-    - curl -Ssi http://localhost:8080 | grep 'LibYAML Support'
     - curl -Ssi http://localhost:8080 | grep 'Redis Version'
 
     # Check if we have common dev tools working
