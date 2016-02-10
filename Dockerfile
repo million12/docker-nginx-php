@@ -36,6 +36,7 @@ RUN \
     `# Also install the following PECL packages:` \
     php70-php-pecl-imagick \
     php70-php-pecl-memcached \
+    php70-php-pecl-redis \
     php70-php-pecl-uploadprogress \
     php70-php-pecl-uuid \
     php70-php-pecl-zip \
@@ -78,12 +79,7 @@ RUN \
   echo -e "StrictHostKeyChecking no" >> /etc/ssh/ssh_config && \
 
   curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
-  chown www /usr/local/bin/composer && \
-
-  `# Instal Redis ext from source (not available as PECL package yet...)` \
-  git clone https://github.com/phpredis/phpredis.git && cd phpredis && git checkout php7 && \
-  phpize && ./configure && make && make install
-
+  chown www /usr/local/bin/composer && composer --version
 
 ADD container-files /
 
