@@ -41,13 +41,15 @@ RUN \
     php70-php-pecl-uuid \
     php70-php-pecl-zip \
 
-    `# Temporary workaround: one dependant package (http, not essential?) fails to install` \
+    `# Temporary workaround: one dependant package fails to install when building image (and the yum error is: Error unpacking rpm package httpd-2.4.6-40.el7.centos.x86_64)...` \
     || true && \
 
-  `# Set PATH so it includes newest PHP and its aliases` \
+  `# Set PATH so it includes newest PHP and its aliases...` \
   ln -sfF /opt/remi/php70/enable /etc/profile.d/php70-paths.sh && \
-  ls -al /etc/profile.d/ && cat /etc/profile.d/php70-paths.sh && \
-  source /etc/profile.d/php70-paths.sh && \
+  `# The above will set PATH when container starts... but not when php is used on container build time.` \
+  `# Therefore create symlinks in /usr/local/bin for all PHP tools...` \
+  ln -sfF /opt/remi/php70/root/usr/bin/{pear,pecl,phar,php,php-cgi,php-config,phpize} /usr/local/bin/. && \
+
   php --version && \
 
   `# Move PHP config files from /etc/opt/remi/php70/* to /etc/* ` \

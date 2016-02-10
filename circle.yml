@@ -32,6 +32,9 @@ test:
     # Check if we have PECL extensions installed / loaded
     - curl -Ssi http://localhost:8080 | grep 'Redis Version'
 
+    # Check if PHP is available in PATH
+    - docker run -ti million12/nginx-php "php -v"
+
     # Check if we have common dev tools working
     - docker run -ti million12/nginx-php "git --version"
     - docker run -ti million12/nginx-php "ruby -v"
