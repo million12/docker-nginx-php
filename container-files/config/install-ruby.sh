@@ -1,7 +1,8 @@
 #!/bin/bash
 
 #
-# Currently not used, Ruby from yum repo is installed.
+# NOTE: currently not used (commented out in `install.sh`).
+# Ruby 2.0 from yum repo is installed.
 #
 
 RUBY_INSTALL_VERSION=0.5.0

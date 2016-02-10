@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NODE_VERSION="v5.4.0"
+NODE_VERSION="v5.6.0"
 
 echo "=============================================================="
 echo "Installing Node.JS ${NODE_VERSION} and npm                    "
