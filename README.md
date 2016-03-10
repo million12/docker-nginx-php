@@ -1,6 +1,7 @@
 # Nginx + PHP-FPM docker container
 
-This is a [million12/nginx-php](https://registry.hub.docker.com/u/million12/nginx-php/) docker container with Nginx + PHP-FPM combo.
+This is a [million12/nginx-php](https://registry.hub.docker.com/u/million12/nginx-php/)
+docker container with Nginx + PHP-FPM combo.
 
 For different PHP versions, look up different branches of this repository.  
 On Docker Hub you can find them under different tags:  
@@ -9,17 +10,18 @@ On Docker Hub you can find them under different tags:
 * `million12/nginx-php:php56` - PHP 5.6 # built from `php56` branch [![Circle CI](https://circleci.com/gh/million12/docker-nginx-php/tree/php56.svg?style=svg)](https://circleci.com/gh/million12/docker-nginx-php/tree/php56)
 * `million12/nginx-php:php55` - PHP 5.5 # built from `php55` branch [![Circle CI](https://circleci.com/gh/million12/docker-nginx-php/tree/php55.svg?style=svg)](https://circleci.com/gh/million12/docker-nginx-php/tree/php55)
 
-# BREAKING CHANGES (2015-12-19) !!!
+## BREAKING CHANGES (2015-12-19) !!!
 ###  `million12/nginx-php:latest` is now PHP 7.0 !!!
 Since **PHP 7** has been released, we retagged `:latest` Docker image tag so it now contains **PHP 7.x** version.  
 For **PHP 5.6** (old `:latest`) is now available as `million12/nginx-php:php56`.
 
 # Things included:
 
-#### - Nginx
+#### - Nginx with HTTP/2 support
 
-This image is based on [million12/nginx](https://github.com/million12/docker-nginx) - go there for more details.  
-**Default vhost** is configured and served from `/data/www/default`. Add .php file to that location to have it executed with PHP.
+This image is based on [million12/nginx](https://github.com/million12/docker-nginx).  
+**Default vhost** is configured and served from `/data/www/default`. Add .php file 
+to that location to have it executed with PHP.
 
 #### - PHP-FPM
 
@@ -31,6 +33,7 @@ File [/etc/nginx/fastcgi_params](container-files/etc/nginx/fastcgi_params) has i
 Custom PHP.ini directives are inside [/etc/php.d](container-files/etc/php.d/).
 
 #### - Common dev tools for web app development
+* git 2.x
 * Ruby 2.0, Bundler
 * NodeJS and NPM
 * NPM packages like gulp, grunt, bower, browser-sync
