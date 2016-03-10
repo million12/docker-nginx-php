@@ -21,7 +21,6 @@ RUN \
     php70-php-fpm \
     php70-php-gd \
     php70-php-gmp \
-    php70-php-horde-horde-lz4 \
     php70-php-intl \
     php70-php-json \
     php70-php-mbstring \
@@ -34,8 +33,10 @@ RUN \
     php70-php-pspell \
 
     `# Also install the following PECL packages:` \
+    php70-php-pecl-igbinary \
     php70-php-pecl-imagick \
     php70-php-pecl-memcached \
+    php70-php-pecl-mysql \
     php70-php-pecl-redis \
     php70-php-pecl-uploadprogress \
     php70-php-pecl-uuid \
