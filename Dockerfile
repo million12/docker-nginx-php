@@ -31,13 +31,11 @@ RUN \
     php70-php-pear \
     php70-php-process \
     php70-php-pspell \
+    php70-php-xml \
 
     `# Also install the following PECL packages:` \
-    php70-php-pecl-igbinary \
     php70-php-pecl-imagick \
-    php70-php-pecl-memcached \
     php70-php-pecl-mysql \
-    php70-php-pecl-redis \
     php70-php-pecl-uploadprogress \
     php70-php-pecl-uuid \
     php70-php-pecl-zip \
@@ -63,14 +61,10 @@ RUN \
   yum install -y ImageMagick GraphicsMagick gcc gcc-c++ libffi-devel libpng-devel zlib-devel && \
 
   `# Install common tools needed/useful during Web App development` \
-
   `# Install Ruby 2` \
   yum install -y ruby ruby-devel && \
-
   `# Install/compile other software (Git, NodeJS)` \
   source /config/install.sh && \
-
-  yum clean all && rm -rf /tmp/yum* && \
 
   `# Install common npm packages: grunt, gulp, bower, browser-sync` \
   npm install -g gulp grunt-cli bower browser-sync && \
@@ -81,8 +75,22 @@ RUN \
   `# Disable SSH strict host key checking: needed to access git via SSH in non-interactive mode` \
   echo -e "StrictHostKeyChecking no" >> /etc/ssh/ssh_config && \
 
+  `# Install Memcached, Redis PECL extensions from the source. Versions available in yum repo have dependency on igbinary which causes PHP seg faults in some PHP apps (e.g. Flow/Neos)...` \
+  `# Install PHP Memcached ext from the source...` \
+  yum install -y libmemcached-devel && \
+  git clone https://github.com/php-memcached-dev/php-memcached.git && cd php-memcached && git checkout php7 && \
+  phpize && ./configure && make && make install && \
+  echo "extension=memcached.so" > /etc/php.d/50-memcached.ini && \
+  `# Install PHP Redis ext from the source...` \
+  git clone https://github.com/phpredis/phpredis.git && cd phpredis && git checkout php7 && \
+  phpize && ./configure && make && make install && \
+  echo "extension=redis.so" > /etc/php.d/50-redis.ini && \
+
   curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
-  chown www /usr/local/bin/composer && composer --version
+  chown www /usr/local/bin/composer && composer --version && \
+
+  `# Clean YUM caches to minimise Docker image size... #` \
+  yum clean all && rm -rf /tmp/yum*
 
 ADD container-files /
 

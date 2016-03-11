@@ -34,6 +34,7 @@ test:
 
     # Check if PHP is available in PATH
     - docker run -ti million12/nginx-php "php -v"
+    - docker run -ti million12/nginx-php "php -i"
 
     # Check if we have common dev tools working
     - docker run -ti million12/nginx-php "git --version"
