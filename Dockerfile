@@ -1,11 +1,17 @@
+#
+# million12/nginx-php
+#
 FROM million12/nginx:latest
 MAINTAINER Marcin Ryzycki <marcin@m12.io>
+
+ENV \
+  STATUS_PAGE_ALLOWED_IP=127.0.0.1
 
 # Add install scripts needed by the next RUN command
 ADD container-files/config/install* /config/
 
 RUN \
-  rpm --rebuilddb && yum update -y && \
+  yum update -y && \
   `# Install yum-utils (provides yum-config-manager) + some basic web-related tools...` \
   yum install -y yum-utils wget patch mysql tar bzip2 unzip openssh-clients rsync && \
 
@@ -63,14 +69,15 @@ RUN \
   `# Install common tools needed/useful during Web App development` \
   `# Install Ruby 2` \
   yum install -y ruby ruby-devel && \
+  echo 'gem: --no-document' > /etc/gemrc && \
+  gem update --system && \
+  gem install bundler && \
+
   `# Install/compile other software (Git, NodeJS)` \
   source /config/install.sh && \
 
   `# Install common npm packages: grunt, gulp, bower, browser-sync` \
   npm install -g gulp grunt-cli bower browser-sync && \
-
-  `# Update RubyGems, install Bundler` \
-  echo 'gem: --no-document' > /etc/gemrc && gem update --system && gem install bundler && \
 
   `# Disable SSH strict host key checking: needed to access git via SSH in non-interactive mode` \
   echo -e "StrictHostKeyChecking no" >> /etc/ssh/ssh_config && \
@@ -93,5 +100,3 @@ RUN \
   yum clean all && rm -rf /tmp/yum*
 
 ADD container-files /
-
-ENV STATUS_PAGE_ALLOWED_IP=127.0.0.1

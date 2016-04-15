@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-set -u
 
 yum list installed | cut -f 1 -d " " | uniq | sort > /tmp/yum-pre
 yum install -y automake autoconf libtoolize openssl-devel curl-devel expat-devel \
