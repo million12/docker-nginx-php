@@ -5,6 +5,8 @@ FROM million12/nginx:latest
 MAINTAINER Marcin Ryzycki <marcin@m12.io>
 
 ENV \
+  NVM_DIR=/usr/local/nvm \
+  NODE_VERSION=5.10.1 \
   STATUS_PAGE_ALLOWED_IP=127.0.0.1
 
 # Add install scripts needed by the next RUN command
@@ -76,6 +78,14 @@ RUN \
   `# Install/compile other software (Git, NodeJS)` \
   source /config/install.sh && \
 
+  `# Install nvm and NodeJS/npm` \
+  export PROFILE=/etc/profile.d/nvm.sh && touch $PROFILE && \
+  curl -sSL https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash && \
+  source $NVM_DIR/nvm.sh && \
+  nvm install $NODE_VERSION && \
+  nvm alias default $NODE_VERSION && \
+  nvm use default && \
+
   `# Install common npm packages: grunt, gulp, bower, browser-sync` \
   npm install -g gulp grunt-cli bower browser-sync && \
 
@@ -100,3 +110,8 @@ RUN \
   yum clean all && rm -rf /tmp/yum*
 
 ADD container-files /
+
+# Add NodeJS/npm to PATH (must be separate ENV instruction as we want to use $NVM_DIR)
+ENV \
+  NODE_PATH=$NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules \
+  PATH=$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
