@@ -11,11 +11,12 @@ ENV \
 
 # Add install scripts needed by the next RUN command
 ADD container-files/config/install* /config/
+ADD container-files/etc/yum.repos.d/* /etc/yum.repos.d/
 
 RUN \
   yum update -y && \
-  `# Install yum-utils (provides yum-config-manager) + some basic web-related tools...` \
-  yum install -y yum-utils wget patch mysql tar bzip2 unzip openssh-clients rsync && \
+  `# Install some basic web-related tools...` \
+  yum install -y wget patch tar bzip2 unzip openssh-clients MariaDB-client && \
 
   `# Install PHP 7.0 from Remi YUM repository...` \
   rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \

@@ -37,6 +37,7 @@ test:
     - docker run -ti million12/nginx-php "php -i"
 
     # Check if we have common dev tools working
+    - docker run -ti million12/nginx-php "mysql --version"
     - docker run -ti million12/nginx-php "git --version"
     - docker run -ti million12/nginx-php "ruby -v"
     - docker run -ti million12/nginx-php "gem -v"
