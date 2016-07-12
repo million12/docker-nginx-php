@@ -6,7 +6,7 @@ MAINTAINER Marcin Ryzycki <marcin@m12.io>
 
 ENV \
   NVM_DIR=/usr/local/nvm \
-  NODE_VERSION=5.10.1 \
+  NODE_VERSION=6.3.0 \
   STATUS_PAGE_ALLOWED_IP=127.0.0.1
 
 # Add install scripts needed by the next RUN command
