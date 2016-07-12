@@ -80,7 +80,7 @@ RUN \
 
   `# Install nvm and NodeJS/npm` \
   export PROFILE=/etc/profile.d/nvm.sh && touch $PROFILE && \
-  curl -sSL https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash && \
+  curl -sSL https://raw.githubusercontent.com/creationix/nvm/v0.31.2/install.sh | bash && \
   source $NVM_DIR/nvm.sh && \
   nvm install $NODE_VERSION && \
   nvm alias default $NODE_VERSION && \
