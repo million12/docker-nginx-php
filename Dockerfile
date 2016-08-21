@@ -6,7 +6,7 @@ ADD container-files/config/install* /config/
 RUN \
   rpm --rebuilddb && yum update -y && \
   `# Install yum-utils (provides yum-config-manager) + some basic web-related tools...` \
-  yum install -y yum-utils wget patch mysql tar bzip2 unzip openssh-clients rsync && \
+  yum install -y yum-utils wget patch mysql tar bzip2 unzip openssh-clients postfix rsync && \
 
   `# Install PHP 5.6` \
   rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm && \
