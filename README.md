@@ -10,10 +10,6 @@ On Docker Hub you can find them under different tags:
 * `million12/nginx-php:php56` - PHP 5.6 # built from `php56` branch [![Circle CI](https://circleci.com/gh/million12/docker-nginx-php/tree/php56.svg?style=svg)](https://circleci.com/gh/million12/docker-nginx-php/tree/php56)
 * `million12/nginx-php:php55` - PHP 5.5 # built from `php55` branch [![Circle CI](https://circleci.com/gh/million12/docker-nginx-php/tree/php55.svg?style=svg)](https://circleci.com/gh/million12/docker-nginx-php/tree/php55)
 
-## BREAKING CHANGES (2015-12-19) !!!
-###  `million12/nginx-php:latest` is now PHP 7.0 !!!
-Since **PHP 7** has been released, we retagged `:latest` Docker image tag so it now contains **PHP 7.x** version.  
-For **PHP 5.6** (old `:latest`) is now available as `million12/nginx-php:php56`.
 
 # Things included:
 
