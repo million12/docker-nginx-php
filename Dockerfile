@@ -13,7 +13,7 @@ RUN \
   yum-config-manager -q --enable remi && \
   yum-config-manager -q --enable remi-php56 && \
   yum install -y php-fpm php-bcmath php-cli php-gd php-intl php-mbstring \
-                  php-pecl-imagick php-mcrypt php-mysql php-opcache php-pdo && \
+                  php-pecl-imagick php-mcrypt php-mysql php-opcache php-pdo php-xml && \
   yum install -y --disablerepo=epel php-pecl-redis php-pecl-yaml && \
 
   `# Install libs required to build some gem/npm packages (e.g. PhantomJS requires zlib-devel, libpng-devel)` \
