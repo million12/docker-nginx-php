@@ -1,6 +1,6 @@
 # Nginx + PHP-FPM docker container
 
-[![Build Status](https://jenkins.ozgo.info/jenkins/buildStatus/icon?job=ghp-million12-docker-nginx-php/branch/master)](https://jenkins.ozgo.info/jenkins/view/GitHub%20Public%20Docker%20Images/job/ghp-million12-docker-nginx-php/)  
+[![Build Status](https://jenkins.ozgo.info/jenkins/buildStatus/icon?job=ghp-million12-docker-nginx-php)](https://jenkins.ozgo.info/jenkins/view/GitHub%20Public%20Docker%20Images/job/ghp-million12-docker-nginx-php/)  
 [![GitHub Open Issues](https://img.shields.io/github/issues/million12/docker-nginx-php.svg)](https://github.com/million12/docker-nginx-php/issues)
 [![GitHub Stars](https://img.shields.io/github/stars/million12/docker-nginx-php.svg)](https://github.com/million12/docker-nginx-php)
 [![GitHub Forks](https://img.shields.io/github/forks/million12/docker-nginx-php.svg)](https://github.com/million12/docker-nginx-php)  
@@ -19,11 +19,12 @@ This is a [million12/nginx-php](https://registry.hub.docker.com/u/million12/ngin
 docker container with Nginx + PHP-FPM combo.
 
 For different PHP versions, look up different branches of this repository.  
-On Docker Hub you can find them under different tags:  
-* `million12/nginx-php:php73` - PHP 7.3 # built from `php73` branch [![Build Status](https://jenkins.ozgo.info/jenkins/buildStatus/icon?job=ghp-million12-docker-nginx-php/branch/php70)](https://jenkins.ozgo.info/jenkins/view/GitHub%20Public%20Docker%20Images/job/ghp-million12-docker-nginx-php/)
-* `million12/nginx-php:php70` - PHP 7.0 # built from `php70` branch [![Build Status](https://jenkins.ozgo.info/jenkins/buildStatus/icon?job=ghp-million12-docker-nginx-php/branch/php70)](https://jenkins.ozgo.info/jenkins/view/GitHub%20Public%20Docker%20Images/job/ghp-million12-docker-nginx-php/)
-* `million12/nginx-php:php56` - PHP 5.6 # built from `php56` branch [![Build Status](https://jenkins.ozgo.info/jenkins/buildStatus/icon?job=ghp-million12-docker-nginx-php/branch/php56)](https://jenkins.ozgo.info/jenkins/view/GitHub%20Public%20Docker%20Images/job/ghp-million12-docker-nginx-php/)
-* `million12/nginx-php:php55` - PHP 5.5 # built from `php55` branch [![Build Status](https://jenkins.ozgo.info/jenkins/buildStatus/icon?job=ghp-million12-docker-nginx-php/branch/php55)](https://jenkins.ozgo.info/jenkins/view/GitHub%20Public%20Docker%20Images/job/ghp-million12-docker-nginx-php/)
+On Docker Hub you can find them under different tags:
+
+* `million12/nginx-php:php73` - PHP 7.3 # built from `php73` branch
+* `million12/nginx-php:php70` - PHP 7.0 # built from `php70` branch
+* `million12/nginx-php:php56` - PHP 5.6 # built from `php56` branch
+* `million12/nginx-php:php55` - PHP 5.5 # built from `php55` branch
 
 
 # Things included:
@@ -36,7 +37,7 @@ to that location to have it executed with PHP.
 
 #### - PHP-FPM
 
-**PHP 7.0** is up & running for default vhost. As soon as .php file is requested, the request will be redirected to PHP upstream. See [/etc/nginx/conf.d/php-location.conf](container-files/etc/nginx/conf.d/php-location.conf).
+**PHP 7.3** is up & running for default vhost. As soon as .php file is requested, the request will be redirected to PHP upstream. See [/etc/nginx/conf.d/php-location.conf](container-files/etc/nginx/conf.d/php-location.conf).
 
 File [/etc/nginx/fastcgi_params](container-files/etc/nginx/fastcgi_params) has improved configuration to avoid repeating same config options for each vhost. This config works well with most PHP applications (e.g. Symfony2, TYPO3, Wordpress, Drupal).
 
@@ -44,10 +45,12 @@ File [/etc/nginx/fastcgi_params](container-files/etc/nginx/fastcgi_params) has i
 Custom PHP.ini directives are inside [/etc/php.d](container-files/etc/php.d/).
 
 #### - Common dev tools for web app development
-* git 2.x
-* Ruby 2.0, Bundler
-* NodeJS and NPM
-* NPM packages like gulp, grunt, bower, browser-sync
+* git `2.14.1`
+* Ruby `2.3`
+* Bundler
+* NodeJS
+* NPM
+* NPM packages like `gulp`, `grunt`, `bower`, `browser-sync`
 
 
 # Directory structure inside image
@@ -112,11 +115,7 @@ Default: `STATUS_PAGE_ALLOWED_IP=127.0.0.1`
 Example: `STATUS_PAGE_ALLOWED_IP=10.1.1.0/16`  
 Configure ip address that would be allowed to see PHP-FPM status page on `/fpm_status` URL.
 
-# Authors
+## Authors
 
 Author: ryzy (<marcin@m12.io>)  
 Author: pozgo (<linux@ozgo.info>)
-
----
-
-**Sponsored by [Prototype Brewery](http://prototypebrewery.io/)** - the new prototyping tool for building highly-interactive prototypes of your website or web app. Built on top of [Neos CMS](https://www.neos.io/) and [Zurb Foundation](http://foundation.zurb.com/) framework.
