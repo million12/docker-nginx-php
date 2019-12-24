@@ -46,7 +46,6 @@ RUN \
     php${PHP_VERSION}-php-pecl-uploadprogress \
     php${PHP_VERSION}-php-pecl-uuid \
     php${PHP_VERSION}-php-pecl-zip \
-    echo "Temporary workaround: one dependant package fails to install when building image (and the yum error is: Error unpacking rpm package httpd-2.4.6-40.el7.centos.x86_64)..." && \
     || true && \
   echo "Set PATH so it includes newest PHP and its aliases..." && \
   ln -sfF /opt/remi/php${PHP_VERSION}/enable /etc/profile.d/php${PHP_VERSION}-paths.sh && \
