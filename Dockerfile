@@ -1,8 +1,4 @@
-#
-# million12/nginx-php
-#
 FROM million12/nginx:latest
-MAINTAINER Marcin Ryzycki <marcin@m12.io>
 
 ENV \
   NVM_DIR=/usr/local/nvm \
@@ -20,12 +16,10 @@ ADD container-files/etc/yum.repos.d/* /etc/yum.repos.d/
 
 RUN \
   yum update -y && \
-  `# Install some basic web-related tools...` \
+  echo "Install some basic web-related tools..." && \
   yum install -y wget patch tar bzip2 unzip openssh-clients MariaDB-client && \
-
-  `# Install PHP 7.3 from Remi YUM repository...` \
+  echo "Install PHP 7.3 from Remi YUM repository..." && \
   rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
-
   yum install -y \
     php${PHP_VERSION}-php \
     php${PHP_VERSION}-php-bcmath \
@@ -46,53 +40,42 @@ RUN \
     php${PHP_VERSION}-php-process \
     php${PHP_VERSION}-php-pspell \
     php${PHP_VERSION}-php-xml \
-
-    `# Also install the following PECL packages:` \
+    echo "install the following PECL packages:" && \
     php${PHP_VERSION}-php-pecl-imagick \
     php${PHP_VERSION}-php-pecl-mysql \
     php${PHP_VERSION}-php-pecl-uploadprogress \
     php${PHP_VERSION}-php-pecl-uuid \
     php${PHP_VERSION}-php-pecl-zip \
-
-    `# Temporary workaround: one dependant package fails to install when building image (and the yum error is: Error unpacking rpm package httpd-2.4.6-40.el7.centos.x86_64)...` \
+    echo "Temporary workaround: one dependant package fails to install when building image (and the yum error is: Error unpacking rpm package httpd-2.4.6-40.el7.centos.x86_64)..." && \
     || true && \
-
-  `# Set PATH so it includes newest PHP and its aliases...` \
+  echo "Set PATH so it includes newest PHP and its aliases..." && \
   ln -sfF /opt/remi/php${PHP_VERSION}/enable /etc/profile.d/php${PHP_VERSION}-paths.sh && \
-  `# The above will set PATH when container starts... but not when php is used on container build time.` \
-  `# Therefore create symlinks in /usr/local/bin for all PHP tools...` \
+  echo "The above will set PATH when container starts... but not when php is used on container build time." && \
+  echo "Therefore create symlinks in /usr/local/bin for all PHP tools..." && \
   ln -sfF /opt/remi/php${PHP_VERSION}/root/usr/bin/{pear,pecl,phar,php,php-cgi,php-config,phpize} /usr/local/bin/. && \
-
   php --version && \
-
-  `# Move PHP config files from /etc/opt/remi/php${PHP_VERSION}/* to /etc/* ` \
+  echo "Move PHP config files from /etc/opt/remi/php${PHP_VERSION}/* to /etc/* " && \
   mv -f /etc/opt/remi/php${PHP_VERSION}/php.ini /etc/php.ini && ln -s /etc/php.ini /etc/opt/remi/php${PHP_VERSION}/php.ini && \
   rm -rf /etc/php.d && mv /etc/opt/remi/php${PHP_VERSION}/php.d /etc/. && ln -s /etc/php.d /etc/opt/remi/php${PHP_VERSION}/php.d && \
-
   echo 'PHP 7.3 installed.' && \
-  `# Install libs required to build some gem/npm packages (e.g. PhantomJS requires zlib-devel, libpng-devel)` \
+  echo "Install libs required to build some gem/npm packages (e.g. PhantomJS requires zlib-devel, libpng-devel)" && \
   yum install -y ImageMagick GraphicsMagick gcc gcc-c++ libffi-devel libpng-devel zlib-devel && \
-
-  `# Install common tools needed/useful during Web App development` \
-  `# Install/compile other software (Git, NodeJS, Ruby)` \
+  echo "Install common tools needed/useful during Web App development" && \
+  echo "Install/compile other software (Git, NodeJS, Ruby)" && \
   source /config/install.sh && \
-
-  `# Install nvm and NodeJS/npm` \
+  echo "Install nvm and NodeJS/npm" && \
   export PROFILE=/etc/profile.d/nvm.sh && touch $PROFILE && \
   curl -sSL https://raw.githubusercontent.com/creationix/nvm/v0.31.2/install.sh | bash && \
   source $NVM_DIR/nvm.sh && \
   nvm install $NODE_VERSION && \
   nvm alias default $NODE_VERSION && \
   nvm use default && \
-
-  `# Install common npm packages: grunt, gulp, bower, browser-sync` \
+  echo "Install common npm packages: grunt, gulp, bower, browser-sync" && \
   npm install -g gulp grunt-cli bower browser-sync && \
-
-  `# Disable SSH strict host key checking: needed to access git via SSH in non-interactive mode` \
+  echo "Disable SSH strict host key checking: needed to access git via SSH in non-interactive mode" && \
   echo -e "StrictHostKeyChecking no" >> /etc/ssh/ssh_config && \
-
-  `# Install Memcached, Redis PECL extensions from the source. Versions available in yum repo have dependency on igbinary which causes PHP seg faults in some PHP apps (e.g. Flow/Neos)...` \
-  `# Install PHP Memcached ext from the source...` \
+  echo "Install Memcached, Redis PECL extensions from the source. Versions available in yum repo have dependency on igbinary which causes PHP seg faults in some PHP apps (e.g. Flow/Neos)..." && \
+  echo "Install PHP Memcached ext from the source..." && \
   yum install -y libmemcached-devel wget && \
   cd /tmp/ && \
   wget https://github.com/php-memcached-dev/php-memcached/archive/v${PHP_MEMCACHED}.tar.gz && \
@@ -100,18 +83,16 @@ RUN \
   cd php-memcached-${PHP_MEMCACHED} && \
   phpize && ./configure && make -j$(getconf _NPROCESSORS_ONLN) && make install && \
   echo "extension=memcached.so" > /etc/php.d/50-memcached.ini && \
-  `# Install PHP Redis ext from the source...` \
+  echo "Install PHP Redis ext from the source..." && \
   cd /tmp/ && \
   wget https://github.com/phpredis/phpredis/archive/${PHP_REDIS}.tar.gz && \
   tar -zxf ${PHP_REDIS}.tar.gz --no-same-owner && \
   cd phpredis-${PHP_REDIS} && \
   phpize && ./configure && make -j$(getconf _NPROCESSORS_ONLN) && make install && \
   echo "extension=redis.so" > /etc/php.d/50-redis.ini && \
-
   curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
   chown www /usr/local/bin/composer && composer --version && \
-
-  `# Clean YUM caches to minimise Docker image size... #` \
+  echo "Clean YUM caches to minimise Docker image size... #" && \
   yum clean all && rm -rf /tmp/yum*
 
 ADD container-files /
