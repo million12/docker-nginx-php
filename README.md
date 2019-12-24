@@ -1,14 +1,29 @@
 # Nginx + PHP-FPM docker container
 
+[![Build Status](https://jenkins.ozgo.info/jenkins/buildStatus/icon?job=ghp-million12-docker-nginx-php/branch/master)](https://jenkins.ozgo.info/jenkins/view/GitHub%20Public%20Docker%20Images/job/ghp-million12-docker-nginx-php/)  
+[![GitHub Open Issues](https://img.shields.io/github/issues/million12/docker-nginx-php.svg)](https://github.com/million12/docker-nginx-php/issues)
+[![GitHub Stars](https://img.shields.io/github/stars/million12/docker-nginx-php.svg)](https://github.com/million12/docker-nginx-php)
+[![GitHub Forks](https://img.shields.io/github/forks/million12/docker-nginx-php.svg)](https://github.com/million12/docker-nginx-php)  
+[![Stars on Docker Hub](https://img.shields.io/docker/stars/million12/nginx-php.svg)](https://hub.docker.com/r/million12/nginx-php)
+[![Pulls on Docker Hub](https://img.shields.io/docker/pulls/million12/nginx-php.svg)](https://hub.docker.com/r/million12/nginx-php)  
+[![](https://images.microbadger.com/badges/version/million12/nginx-php.svg)](http://microbadger.com/images/million12/nginx-php)
+[![](https://images.microbadger.com/badges/license/million12/nginx-php.svg)](http://microbadger.com/images/million12/nginx-php)  
+[![](https://images.microbadger.com/badges/image/million12/nginx-php.svg)](http://microbadger.com/images/million12/nginx-php)
+
+[![Docker build](https://dockeri.co/image/million12/nginx-php)](https://hub.docker.com/r/million12/nginx-php/)
+
+Felling like supporting me in my projects use donate button. Thank You!  
+[![](https://img.shields.io/badge/donate-PayPal-blue.svg)](https://www.paypal.me/POzgo)
+
 This is a [million12/nginx-php](https://registry.hub.docker.com/u/million12/nginx-php/)
 docker container with Nginx + PHP-FPM combo.
 
 For different PHP versions, look up different branches of this repository.  
 On Docker Hub you can find them under different tags:  
-* `million12/nginx-php:latest` - PHP 7.0 # built from `master` branch [![Circle CI](https://circleci.com/gh/million12/docker-nginx-php.svg?style=svg)](https://circleci.com/gh/million12/docker-nginx-php)
-* `million12/nginx-php:php70` - PHP 7.0 # built from `php70` branch [![Circle CI](https://circleci.com/gh/million12/docker-nginx-php/tree/php70.svg?style=svg)](https://circleci.com/gh/million12/docker-nginx-php/tree/php70)
-* `million12/nginx-php:php56` - PHP 5.6 # built from `php56` branch [![Circle CI](https://circleci.com/gh/million12/docker-nginx-php/tree/php56.svg?style=svg)](https://circleci.com/gh/million12/docker-nginx-php/tree/php56)
-* `million12/nginx-php:php55` - PHP 5.5 # built from `php55` branch [![Circle CI](https://circleci.com/gh/million12/docker-nginx-php/tree/php55.svg?style=svg)](https://circleci.com/gh/million12/docker-nginx-php/tree/php55)
+* `million12/nginx-php:php73` - PHP 7.3 # built from `php73` branch [![Build Status](https://jenkins.ozgo.info/jenkins/buildStatus/icon?job=ghp-million12-docker-nginx-php/branch/php70)](https://jenkins.ozgo.info/jenkins/view/GitHub%20Public%20Docker%20Images/job/ghp-million12-docker-nginx-php/)
+* `million12/nginx-php:php70` - PHP 7.0 # built from `php70` branch [![Build Status](https://jenkins.ozgo.info/jenkins/buildStatus/icon?job=ghp-million12-docker-nginx-php/branch/php70)](https://jenkins.ozgo.info/jenkins/view/GitHub%20Public%20Docker%20Images/job/ghp-million12-docker-nginx-php/)
+* `million12/nginx-php:php56` - PHP 5.6 # built from `php56` branch [![Build Status](https://jenkins.ozgo.info/jenkins/buildStatus/icon?job=ghp-million12-docker-nginx-php/branch/php56)](https://jenkins.ozgo.info/jenkins/view/GitHub%20Public%20Docker%20Images/job/ghp-million12-docker-nginx-php/)
+* `million12/nginx-php:php55` - PHP 5.5 # built from `php55` branch [![Build Status](https://jenkins.ozgo.info/jenkins/buildStatus/icon?job=ghp-million12-docker-nginx-php/branch/php55)](https://jenkins.ozgo.info/jenkins/view/GitHub%20Public%20Docker%20Images/job/ghp-million12-docker-nginx-php/)
 
 
 # Things included:
