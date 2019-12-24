@@ -10,4 +10,4 @@
 #
 # Note: define MANPATH so bash doesn't complain about unbound MANPATH variable from there
 export MANPATH=""
-source /etc/profile.d/php70-paths.sh
+source /etc/profile.d/php${PHP_VERSION}-paths.sh
