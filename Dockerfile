@@ -81,6 +81,7 @@ RUN \
   tar -zxf v${PHP_MEMCACHED}.tar.gz --no-same-owner && \
   cd php-memcached-${PHP_MEMCACHED} && \
   phpize && ./configure && make -j$(getconf _NPROCESSORS_ONLN) && make install && \
+  rm -rf /tmp/php-memcached-${PHP_MEMCACHED} && rm -rf /tmp/v${PHP_MEMCACHED}.tar.gz && \
   echo "extension=memcached.so" > /etc/php.d/50-memcached.ini && \
   echo "Install PHP Redis ext from the source..." && \
   cd /tmp/ && \
@@ -88,6 +89,7 @@ RUN \
   tar -zxf ${PHP_REDIS}.tar.gz --no-same-owner && \
   cd phpredis-${PHP_REDIS} && \
   phpize && ./configure && make -j$(getconf _NPROCESSORS_ONLN) && make install && \
+  rm -rf /tmp/phpredis-${PHP_REDIS} && rm -rf /tmp/${PHP_REDIS}.tar.gz && \
   echo "extension=redis.so" > /etc/php.d/50-redis.ini && \
   curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
   chown www /usr/local/bin/composer && composer --version && \
