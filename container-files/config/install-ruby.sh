@@ -1,27 +1,19 @@
 #!/bin/bash
 
-#
-# NOTE: currently not used (commented out in `install.sh`).
-# Ruby 2.0 from yum repo is installed.
-#
-
-RUBY_INSTALL_VERSION=0.5.0
-RUBY_VERSION=2.2.2
-
 echo "=============================================================="
 echo "Installing Ruby ${RUBY_VERSION}...                            "
 echo "=============================================================="
 
-cd /tmp
-wget -O ruby-install-$RUBY_INSTALL_VERSION.tar.gz \
-  https://github.com/postmodern/ruby-install/archive/v$RUBY_INSTALL_VERSION.tar.gz
-tar -xzf ruby-install-$RUBY_INSTALL_VERSION.tar.gz --no-same-owner
-cd ruby-install-*
-make install
-
-ruby-install -i /usr/local ruby $RUBY_VERSION
-
-make uninstall
-
-rm -rf /tmp/ruby* && cd /tmp
+curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
+curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import -
+curl -L get.rvm.io | bash -s stable
+echo 'source /etc/profile.d/rvm.sh' >> /etc/profile
+/usr/bin/bash -l -c "rvm reload"
+/usr/bin/bash -l -c "rvm requirements run"
+/usr/bin/bash -l -c "rvm install ${RUBY_VERSION}"
+/usr/bin/bash -l -c "rvm use ${RUBY_VERSION} --default"
+/usr/bin/bash -l -c "ruby --version"
+echo 'gem: --no-document' > /etc/gemrc
+/usr/bin/bash -l -c "gem update --system"
+/usr/bin/bash -l -c "gem install bundler"
 echo && echo "Ruby installed." && echo
