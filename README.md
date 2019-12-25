@@ -21,6 +21,7 @@ docker container with Nginx + PHP-FPM combo.
 For different PHP versions, look up different branches of this repository.  
 On Docker Hub you can find them under different tags:
 
+* `million12/nginx-php:php74` - PHP 7.4 # built from `php74` branch
 * `million12/nginx-php:php73` - PHP 7.3 # built from `php73` branch
 * `million12/nginx-php:php70` - PHP 7.0 # built from `php70` branch
 * `million12/nginx-php:php56` - PHP 5.6 # built from `php56` branch
@@ -37,7 +38,7 @@ to that location to have it executed with PHP.
 
 #### - PHP-FPM
 
-**PHP 7.3** is up & running for default vhost. As soon as .php file is requested, the request will be redirected to PHP upstream. See [/etc/nginx/conf.d/php-location.conf](container-files/etc/nginx/conf.d/php-location.conf).
+**PHP 7.4** is up & running for default vhost. As soon as .php file is requested, the request will be redirected to PHP upstream. See [/etc/nginx/conf.d/php-location.conf](container-files/etc/nginx/conf.d/php-location.conf).
 
 File [/etc/nginx/fastcgi_params](container-files/etc/nginx/fastcgi_params) has improved configuration to avoid repeating same config options for each vhost. This config works well with most PHP applications (e.g. Symfony2, TYPO3, Wordpress, Drupal).
 
