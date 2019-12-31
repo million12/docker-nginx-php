@@ -8,7 +8,7 @@ ENV \
   GIT_VERSION=2.24.1 \
   PHP_MEMCACHED=3.1.5 \
   PHP_REDIS=5.1.1 \
-  PHP_VERSION=73
+  PHP_VERSION=74
 
 # Add install scripts needed by the next RUN command
 ADD container-files/config/install* /config/
